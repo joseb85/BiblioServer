@@ -13,7 +13,9 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <version.mysql>8.0.13</version.mysql>
+        <version.oracle>12.1.0.1</version.oracle>
+        <version.c3p0>0.9.1.2</version.c3p0>
+        <version.c3p0-thin>0.9.0.2</version.c3p0-thin>
         <version.spring-core>5.1.1.RELEASE</version.spring-core>
         <version.spring-data-jpa>2.1.1.RELEASE</version.spring-data-jpa>
         <version.hibernate-jpa>1.0.2.Final</version.hibernate-jpa>
@@ -22,11 +24,23 @@
     </properties>
     
     <dependencies>
-        <!-- MYSQL -->
+        <!-- ORACLE -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${version.mysql}</version>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc7</artifactId>
+            <version>${version.oracle}</version>
+        </dependency>
+        <!-- C3P0 -->
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>${version.c3p0}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0-oracle-thin-extras</artifactId>
+            <version>${version.c3p0-thin}</version>
         </dependency>
 
         <!-- SPRING CORE -->
@@ -95,6 +109,11 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
+            <version>${version.hibernate}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
             <version>${version.hibernate}</version>
         </dependency>
 
