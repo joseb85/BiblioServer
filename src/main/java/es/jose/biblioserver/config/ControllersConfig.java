@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  * <p>
  * ContextLoaderListener cargar el resto de beans
  * @since 26-10-2018
- * @author José B. Castillón Molina
+ * @author joseb85
  */
 public class ControllersConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 

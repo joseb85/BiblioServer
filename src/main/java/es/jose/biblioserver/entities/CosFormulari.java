@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
- * @author Jose B. Castillon Molina
+ * @author joseb85
  */
 @Entity
 @Table(name = "cosformulari")
@@ -34,10 +34,17 @@ public class CosFormulari implements Serializable {
     @Column(name = "PATTERN")
     private String pattern;
 
+    //Ver dadesFormulari para explicación de la configuración de la lista
     @JsonManagedReference
     @OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL}, orphanRemoval = true)
     private Set<DocumentFormulari> documentFormulari;
     
+    // Con JsonManagedReference ordenamos que se incluya esta lista cuando se convierta a JSON para devolver el objeto. Por contra el CosFormulari de DadesFormulari no podremos incluirlo
+    // Con mappedBy se referencia al CosFormulari de la clase DadesFormulari. El valor debe ser el nombre de la propiedad Java
+    // Cascada ALL hace que se realicen todas las operaciones (crear/modificar/eliminar) en cada uno de los ítems (si no hay cascada en los objetos hijos no se realizarán estas operaciones en ellos)
+    // Con orphanRemoval se eliminan todos aquellos ítems ausentes al guardar la lista
+    // Con fetch EAGER se carga la lista a la vez que es solicitado el objeto en BD
+    // Utilizar Set. Con List saltan excepciones
     @JsonManagedReference
     @OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL}, orphanRemoval = true)
     private Set<DadesFormulari> dadesFormulari;

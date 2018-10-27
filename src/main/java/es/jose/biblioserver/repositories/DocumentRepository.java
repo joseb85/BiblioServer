@@ -5,7 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  *
- * @author Jose B. Castillon Molina
+ * @author joseb85
  */
 public interface DocumentRepository extends PagingAndSortingRepository<Document, String>{
 

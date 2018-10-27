@@ -3,6 +3,7 @@ package es.jose.biblioserver.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,11 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
- * @author Jose B. Castillon Molina
+ * @author joseb85
  */
 @Entity
 @Table(name = "documentformulari")
@@ -39,12 +41,13 @@ public class DocumentFormulari implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private CosFormulari formulari;
     
+    //Ver explicaciones en DadesFormulari
     @JoinColumn(name = "TITOL", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
     private Texto titol;
     
     @JoinColumn(name = "DOCUMENT", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
     private Document document;
 
     public Long getId() {

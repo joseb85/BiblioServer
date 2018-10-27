@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 /**
  * Archivo principal de configuración de Spring
  * @since 26-10-2018
- * @author José B. Castillón Molina
+ * @author joseb85
  */
 @Configuration
 @EnableWebMvc

@@ -21,7 +21,6 @@
         <version.hibernate-jpa>1.0.2.Final</version.hibernate-jpa>
         <version.hibernate>5.3.7.Final</version.hibernate>
         <version.jackson>2.9.7</version.jackson>
-        <version.google-translate>1.49.0</version.google-translate>
     </properties>
     
     <dependencies>
@@ -156,13 +155,6 @@
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
-        </dependency>
-        
-        <!-- GOOGLE TRANSLATE -->
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-translate</artifactId>
-            <version>${version.google-translate}</version>
         </dependency>
     </dependencies>
 

@@ -20,7 +20,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 /**
  * Archivo de configuración de base de datos
  * @since 26-10-2018
- * @author José B. Castillón Molina
+ * @author joseb85
  */
 @Configuration
 @EnableJpaRepositories

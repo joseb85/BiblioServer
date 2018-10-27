@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * protocolo, dominio y puerto. Con esta configuración dejamos acceder todas las
  * peticiones.
  * @since 26-10-2018
- * @author José B. Castillón Molina
+ * @author joseb85
  */
 public class CORSFilter implements Filter {
 

@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author Jose B. Castillon Molina
+ * @author joseb85
  */
 @Service
 public class CosFormulariService {
@@ -26,6 +27,7 @@ public class CosFormulariService {
         return cf.isPresent() ? cf.get() : null;
     }
 
+    @Transactional
     public CosFormulari save(CosFormulari item) {
         item = cosFormulariRepository.save(item);
         return findById(item.getFormulari());

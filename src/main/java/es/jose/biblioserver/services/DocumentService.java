@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author Jose B. Castillon Molina
+ * @author joseb85
  */
 @Service
 public class DocumentService {
