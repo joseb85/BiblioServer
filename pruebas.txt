@@ -1,0 +1,137 @@
+################ GUARDAR LISTAS ################
+
+>>> Las siguientes pruebas se realizan para intentar guardar/editar las listas "dadesformulari" y "documentformulari" de CosFormulari sin preocuparse por los hijos de cada uno de los ítems como los textos(Texto) o los documentos(Document)
+
+### PRUEBA 1 ###
+Se intenta guardar un cosformulari tal cual nos ha venido en el GET (con dos dades y dos docs), sin ningún cambio
+
+- COSFORMULARI
+
+@JsonManagedReference
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER)
+private Set<DocumentFormulari> documentFormulari;
+
+@JsonManagedReference
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER)
+private Set<DadesFormulari> dadesFormulari;
+
+- DADESFORMULARI
+
+@JsonBackReference
+@JoinColumn(name = "FORMULARI", referencedColumnName = "FORMULARI")
+@ManyToOne(fetch = FetchType.EAGER)
+private CosFormulari formulari;
+
+- DOCUMENTFORMULARI
+
+@JsonBackReference
+@JoinColumn(name = "FORMULARI", referencedColumnName = "FORMULARI")
+@ManyToOne(fetch = FetchType.EAGER)
+private CosFormulari formulari;
+
+@JoinColumn(name = "DOCUMENT", referencedColumnName = "ID")
+@ManyToOne(fetch = FetchType.EAGER)
+private Document document;
+
+- RESULTADO
+200 OK
+Todo correcto
+
+### PRUEBA 2 ###
+La misma prueba que la Prueba 1 pero se cambia la propiedad "pattern" de cosFormulari
+
+- RESULTADO
+200 Ok
+Correcto, devuelve el cambio y en la base de datos también se ha modificado
+
+### PRUEBA 3 ###
+La misma prueba que la Prueba 1 pero se cambia la propiedad "ordre" en las listas "dadesformulari" y "documentsformulari"
+
+- RESULTADO
+200 OK
+Incorrecto, devuelve los objetos sin modificaciones. Tampoco se han realizado en la BD.
+
+### PRUEBA 4 ###
+La misma prueba que la Prueba 1 pero se cambia la propiedad "id" en un item de la lista "dadesformulari" por uno no existente
+
+- RESULTADO
+500 Internal Server Error
+org.springframework.orm.jpa.JpaObjectRetrievalFailureException: Unable to find es.jose.biblioserver.entities.DadesFormulari with id 12; nested exception is javax.persistence.EntityNotFoundException: Unable to find es.jose.biblioserver.entities.DadesFormulari with id 12
+
+### PRUEBA 5 ###
+La misma prueba que Prueba 3 pero añadiendo la cascada ALL a las listas en "CosFormulari"
+
+- COSFORMULARI
+
+@JsonManagedReference
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
+private Set<DocumentFormulari> documentFormulari;
+
+@JsonManagedReference
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
+private Set<DadesFormulari> dadesFormulari;
+
+- RESULTADO
+200 Ok
+Correcto, devuelve el cambio y en la base de datos también se ha modificado
+
+### PRUEBA 6 ###
+La misma prueba que Prueba 4 pero añadiendo la cascada ALL a las listas en "CosFormulari"
+
+- RESULTADO
+200 OK
+Correcto, devuelve el nuevo ítem en la lista y se ha creado en la BD. También funciona asignando null al "id". Si no se han enviado todos los ítems de la lista NO elimina los que faltan.
+
+- APUNTE
+Si no hay un autogenerado "increment" en el id peta con el siguiente error (incluso si se le coloca un id numérico a mano):
+java.sql.SQLIntegrityConstraintViolationException: ORA-01400: cannot insert NULL into ("PRUEBA_OWN"."DADESFORMULARI"."ID")
+
+
+################ ELIMINAR ÍTEMS DE LAS LISTAS ################
+
+>>> El objetivo es eliminar ítems de las listas "dadesformulari" y "documentformulari". Queremos que los hijos de tipo Texto se eliminen en caso de no estar rehusados y que los hijos de tipo Document no se eliminen en ninguno de los casos.
+>>> Como se ha detallado en el resultado de la Prueba 6, si se envía a guardar una lista no elimina los ítems ausentes
+
+### PRUEBA 7 ###
+Envío un CosFormulari y en ambas listas no incluyo dos de los ítems. Añado la librería eclipselink 2.5.0 y la anotación @PrivateOwned en las dos listas de CosFormulari.
+
+- COSFORMULARI
+
+@JsonManagedReference
+@PrivateOwned
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
+private Set<DocumentFormulari> documentFormulari;
+
+@JsonManagedReference
+@PrivateOwned
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
+private Set<DadesFormulari> dadesFormulari;
+
+- RESULTADO
+200 OK
+No ha borrado nada en BD y devuelve todos los ítems de las listas
+
+### PRUEBA 8 ###
+Eliminamos lo añadido en la Prueba 7 y añadimos orphanRemoval = true en las listas para realizar la misma prueba que la 7
+
+- COSFORMULARI
+
+@JsonManagedReference
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL}, orphanRemoval = true)
+private Set<DocumentFormulari> documentFormulari;
+
+@JsonManagedReference
+@OneToMany(mappedBy = "formulari", fetch = FetchType.EAGER, cascade = { CascadeType.ALL}, orphanRemoval = true)
+private Set<DadesFormulari> dadesFormulari;
+
+-RESULTADO
+200 OK
+Elimina todos los dadesFormulari y documentFormulari que no se encuentran en la lista. Los hijos de estos (Texto y Document) NO los borra, sino que se mantienen en sus tablas.
+
+### script para secuencia
+
+CREATE SEQUENCE seq
+  START WITH 1
+  INCREMENT BY 1;
+
+UPDATE dadesformulari SET ordre = seq.nextval;

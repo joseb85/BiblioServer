@@ -25,5 +25,10 @@ public class CosFormulariService {
         Optional<CosFormulari> cf = cosFormulariRepository.findById(id);
         return cf.isPresent() ? cf.get() : null;
     }
+
+    public CosFormulari save(CosFormulari item) {
+        item = cosFormulariRepository.save(item);
+        return findById(item.getFormulari());
+    }
     
 }
