@@ -30,7 +30,7 @@ public class CosFormulariService {
     @Transactional
     public CosFormulari save(CosFormulari item) {
         item = cosFormulariRepository.save(item);
-        return findById(item.getFormulari());
+        return findById(item.getFormulari().getId());
     }
     
 }
